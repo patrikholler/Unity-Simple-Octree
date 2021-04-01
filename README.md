@@ -20,6 +20,13 @@ If you interested in voxel technologies join us: https://discord.gg/aegudcbYhrâ€
     <li>Switch gizmo on</li>
 </ol>
 
+## Known problems
+https://forum.unity.com/threads/voxel-planet-octree-job-system-ecs-dots.1083410/
+<ol>
+    <li>I dont feel it is the best solution to call the job every seconds and create octree nodes from 0 to max lod level again and again.</li>
+    <li>It will be better to use IJobParallelFor</li>
+</ol>
+
 ## License
 
 MIT
