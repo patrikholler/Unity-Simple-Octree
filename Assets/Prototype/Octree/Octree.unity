@@ -247,7 +247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2027664952}
   drawGizno: 1
-  maxLodLevel: 3
+  maxLodLevel: 10
   radius: 1000
   material: {fileID: 2100000, guid: b4acf0743f04f104588d38eb2201928e, type: 2}
 --- !u!4 &1261918569
