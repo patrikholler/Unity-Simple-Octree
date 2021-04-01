@@ -33,6 +33,7 @@ public class Octree : MonoBehaviour
 
     void Update()
     {
+        // if player moved more than 10 meter
         if (Vector3.Distance(playerCurrentPosition, player.transform.position) > 10f && !isCheckDistance)
         {
             playerCurrentPosition = player.transform.position;
@@ -62,7 +63,6 @@ public class Octree : MonoBehaviour
         foreach (var item in outActiveNodes)
         {
             mainActiveNodes.Add(item.Value);
-            //CreateIsosurface(item.Value);
         }
 
         if(jobHandle.IsCompleted) {
