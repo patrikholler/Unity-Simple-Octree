@@ -31,7 +31,6 @@ public class Octree : MonoBehaviour
         CheckDistance();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Vector3.Distance(playerCurrentPosition, player.transform.position) > 10f && !isCheckDistance)
@@ -41,12 +40,6 @@ public class Octree : MonoBehaviour
 
             CheckDistance();
         }
-
-    }
-
-    void OnDestroy()
-    {
-        // outActiveNodes.Dispose();
     }
 
     private void CheckDistance()
@@ -54,7 +47,7 @@ public class Octree : MonoBehaviour
         outActiveNodes = new NativeHashMap<float3, OctreeNode>(1, Allocator.Persistent);
         mainActiveNodes.Clear();
 
-        var job4 = new FirstDistanceCheck()
+        var job = new FirstDistanceCheck()
         {
             maxLodLevel = maxLodLevel,
             radius = radius,
@@ -62,9 +55,9 @@ public class Octree : MonoBehaviour
             playerPosition = new float3(player.transform.position.x, player.transform.position.y, player.transform.position.z),
         };
 
-        JobHandle jobHandle4 = job4.Schedule();
+        JobHandle jobHandle = job.Schedule();
 
-        jobHandle4.Complete();
+        jobHandle.Complete();
 
         foreach (var item in outActiveNodes)
         {
@@ -72,7 +65,7 @@ public class Octree : MonoBehaviour
             //CreateIsosurface(item.Value);
         }
 
-        if(jobHandle4.IsCompleted) {
+        if(jobHandle.IsCompleted) {
             isCheckDistance = false;
         }
 
