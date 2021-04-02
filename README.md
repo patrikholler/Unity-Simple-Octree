@@ -1,7 +1,7 @@
 # Unity Simple Octree
 
 I started to create it for voxel planet game.
-If you interested in voxel technologies join us: https://discord.gg/aegudcbYhrâ€‹
+If you interested in voxel technologies join us: https://discord.com/invite/aegudcbYhr (http://voxelbased.com)
 
 ![octree](https://raw.githubusercontent.com/patrikholler/Unity-Simple-Octree/master/screenshot/screenshot01.png)
 
@@ -23,7 +23,7 @@ If you interested in voxel technologies join us: https://discord.gg/aegudcbYhrâ€
 ## Known problems
 https://forum.unity.com/threads/voxel-planet-octree-job-system-ecs-dots.1083410/
 <ol>
-    <li>I dont feel it is the best solution to call the job every seconds and create octree nodes from 0 to max lod level again and again.</li>
+    <li>I do not feel it is the best solution to call the job every seconds and create octree nodes from 0 to max lod level again and again.</li>
     <li>It will be better to use IJobParallelFor</li>
 </ol>
 
