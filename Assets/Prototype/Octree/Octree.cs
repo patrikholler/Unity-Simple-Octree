@@ -80,11 +80,6 @@ public class Octree : MonoBehaviour
         public NativeHashMap<float3, OctreeNode> activeNodesIndex;
         public float3 playerPosition;
 
-        private static float Distance(float3 a, float3 b)
-        {
-            float3 vector = new float3(a.x - b.x, a.y - b.y, a.z - b.z);
-            return math.sqrt(vector.x * vector.x + vector.y * vector.y + vector.z * vector.z);
-        }
 
         float3 GetPosition(int index, float3 parentPosition, float delta)
         {
@@ -120,6 +115,8 @@ public class Octree : MonoBehaviour
 
             return position;
         }
+
+        int[]
 
         float3 GetVoxelBase(int cIndex)
         {
@@ -157,9 +154,9 @@ public class Octree : MonoBehaviour
 
         private void CheckClosesNodes(int index, float3 position, float3 voxelPosition, byte lodLevel, float size)
         {
-            float diagonal = Mathf.Sqrt(2 * (size * size));
+            float diagonal = math.sqrt(2 * (size * size));
 
-            if (lodLevel < maxLodLevel && Distance(playerPosition, position) < diagonal)
+            if (lodLevel < maxLodLevel &&  math.length(playerPosition - position) < diagonal)
             {
                 float delta = size / 4;
 
@@ -179,7 +176,7 @@ public class Octree : MonoBehaviour
         public void Execute()
         {
 
-            CheckClosesNodes(-1, new float3(radius / 2, radius / 2, radius / 2), float3.zero, 0, radius);
+            CheckClosesNodes(0, new float3(radius / 2, radius / 2, radius / 2), float3.zero, 0, radius);
         }
     }
 
