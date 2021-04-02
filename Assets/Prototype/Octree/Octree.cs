@@ -19,6 +19,28 @@ public class Octree : MonoBehaviour
     [SerializeField]
     private float radius = 1000;
 
+    private static readonly int3[] voxelBasePosition = new int3[8]{
+        new int3(0, 0, 0),
+        new int3(0, 0, 1),
+        new int3(1, 0, 0),
+        new int3(1, 0, 1),
+        new int3(0, 1, 0),
+        new int3(0, 1, 1),                   
+        new int3(1, 1, 0),
+        new int3(1, 1, 1)
+    };
+
+    private static readonly int3[] deltaSigns = new int3[8]{
+        new int3(-1, -1, -1),
+        new int3(-1, -1, 1),
+        new int3(1, -1, -1),
+        new int3(1, -1, 1),
+        new int3(-1, 1, -1),
+        new int3(-1, 1, 1),                   
+        new int3(1, 1, -1),
+        new int3(1, 1, 1)
+    };
+
     /* Render */
     public Material material;
 
@@ -80,76 +102,10 @@ public class Octree : MonoBehaviour
         public NativeHashMap<float3, OctreeNode> activeNodesIndex;
         public float3 playerPosition;
 
-
         float3 GetPosition(int index, float3 parentPosition, float delta)
         {
-            float3 position = float3.zero;
-
-            switch (index)
-            {
-                case 0:
-                    position = new float3(parentPosition.x - delta, parentPosition.y - delta, parentPosition.z - delta);
-                    break;
-                case 1:
-                    position = new float3(parentPosition.x - delta, parentPosition.y - delta, parentPosition.z + delta);
-                    break;
-                case 2:
-                    position = new float3(parentPosition.x + delta, parentPosition.y - delta, parentPosition.z - delta);
-                    break;
-                case 3:
-                    position = new float3(parentPosition.x + delta, parentPosition.y - delta, parentPosition.z + delta);
-                    break;
-                case 4:
-                    position = new float3(parentPosition.x - delta, parentPosition.y + delta, parentPosition.z - delta);
-                    break;
-                case 5:
-                    position = new float3(parentPosition.x - delta, parentPosition.y + delta, parentPosition.z + delta);
-                    break;
-                case 6:
-                    position = new float3(parentPosition.x + delta, parentPosition.y + delta, parentPosition.z - delta);
-                    break;
-                case 7:
-                    position = new float3(parentPosition.x + delta, parentPosition.y + delta, parentPosition.z + delta);
-                    break;
-            }
-
-            return position;
-        }
-
-        int[]
-
-        float3 GetVoxelBase(int cIndex)
-        {
-            float3 position = float3.zero;
-
-            switch (cIndex)
-            {
-                case 0:
-                    position = new float3(0, 0, 0);
-                    break;
-                case 1:
-                    position = new float3(0, 0, 1);
-                    break;
-                case 2:
-                    position = new float3(1, 0, 0);
-                    break;
-                case 3:
-                    position = new float3(1, 0, 1);
-                    break;
-                case 4:
-                    position = new float3(0, 1, 0);
-                    break;
-                case 5:
-                    position = new float3(0, 1, 1);
-                    break;
-                case 6:
-                    position = new float3(1, 1, 0);
-                    break;
-                case 7:
-                    position = new float3(1, 1, 1);
-                    break;
-            }
-            return position;
+            int3 deltaSign = deltaSigns[index];
+            return new float3(parentPosition.x + deltaSign.x * delta, parentPosition.y + deltaSign.y * delta, parentPosition.z + deltaSign.z * delta);
         }
 
         private void CheckClosesNodes(int index, float3 position, float3 voxelPosition, byte lodLevel, float size)
@@ -162,7 +118,7 @@ public class Octree : MonoBehaviour
 
                 for (int i = 0; i < 8; i++)
                 {
-                    float3 voxelPosition2 = voxelPosition + (GetVoxelBase(i) * size / 2);
+                    float3 voxelPosition2 = voxelPosition + (new float3(voxelBasePosition[i].x, voxelBasePosition[i].y,voxelBasePosition[i].z) * size / 2);
                     CheckClosesNodes(i, GetPosition(i, position, delta), voxelPosition2, (byte)(lodLevel + 1), size / 2);
                 }
             }
@@ -175,7 +131,6 @@ public class Octree : MonoBehaviour
 
         public void Execute()
         {
-
             CheckClosesNodes(0, new float3(radius / 2, radius / 2, radius / 2), float3.zero, 0, radius);
         }
     }
